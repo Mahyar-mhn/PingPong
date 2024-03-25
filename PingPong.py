@@ -9,14 +9,11 @@ PADDLE_SPEED = 7
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Ping Pong")
 
-
-TABLE_GREEN: (0, 102, 0)
-BALL_ORANGE: (255, 140, 0)
-PADDLE_BLUE: (0, 0, 255)
-BACKGROUND_GRAY: (192, 192, 192)
-SCOREBOARD_YELLOW: (255, 255, 0)
-NET_WHITE: (255, 255, 255)
-SCORE_GOLD: (255, 215, 0)
+BALL_ORANGE = (255, 140, 0)
+PADDLE_BLUE = (0, 0, 255)
+BACKGROUND_GRAY = (192, 192, 192)
+SCOREBOARD_YELLOW = (255, 255, 0)
+SCORE_GOLD = (255, 215, 0)
 
 score1 = 0
 score2 = 0
@@ -66,3 +63,80 @@ def reset_all_positions():
     return ball_dx
 
 
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                paddle2_dy = -PADDLE_SPEED
+
+            elif event.key == pygame.K_DOWN:
+                paddle2_dy = PADDLE_SPEED
+
+            elif event.key == pygame.K_SPACE:
+                ball_in_motion = True
+
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP or event.key == pygame.KEYDOWN:
+                paddle2_dy = 0
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        paddle1_dy = -PADDLE_SPEED
+    elif keys[pygame.K_s]:
+        paddle1_dy = PADDLE_SPEED
+    else:
+        paddle1_dy = 0
+
+    if ball_in_motion:
+        BALL.x += ball_dx
+        BALL.y += ball_dy
+
+    if BALL.top <= 0 or BALL.bottom >= HEIGHT:
+        ball_dy *= -1
+
+    if check_collision(BALL, PADDLE1) or check_collision(BALL, PADDLE2):
+        ball_dx *= -1
+
+    if BALL.left <= 0:
+        score2 += 1
+        if score2 == 5:
+            running = False
+        else:
+            ball_dx = reset_all_positions()
+            ball_in_motion = False
+    elif BALL.right >= WIDTH:
+        score1 += 1
+        if score1 == 5:
+            running = False
+        else:
+            ball_dx = reset_all_positions()
+            ball_in_motion = False
+
+    PADDLE1.y += paddle1_dy
+    PADDLE2.y += paddle2_dy
+
+    if PADDLE1.top <= 0:
+        PADDLE1.top = 0
+    if PADDLE1.bottom >= HEIGHT:
+        PADDLE1.bottom = HEIGHT
+
+    if PADDLE2.top <= 0:
+        PADDLE2.top = 0
+    if PADDLE2.bottom >= HEIGHT:
+        PADDLE2.bottom = HEIGHT
+
+    screen.fill(BACKGROUND_GRAY)
+
+    pygame.draw.rect(screen, PADDLE_BLUE, PADDLE1)
+    pygame.draw.rect(screen, PADDLE_BLUE, PADDLE2)
+    pygame.draw.ellipse(screen, BALL_ORANGE, BALL)
+
+    draw_scores()
+    pygame.display.flip()
+
+    pygame.time.delay(30)
+
+pygame.quit()
