@@ -12,6 +12,7 @@ PADDLE_BLUE: (0, 0, 255)
 BACKGROUND_GRAY: (192, 192, 192)
 SCOREBOARD_YELLOW: (255, 255, 0)
 NET_WHITE: (255, 255, 255)
+SCORE_GOLD: (255, 215, 0)
 
 score1 = 0
 score2 = 0
@@ -31,3 +32,14 @@ paddle1_dy = 0
 paddle2_dy = 0
 
 ball_in_motion = True
+
+
+def draw_scores():
+    font = pygame.font.Font(None, 36)
+    score1_text = font.render(f"{PLAYER1_NAME} : {score1}", True, SCORE_GOLD)
+    score2_text = font.render(f"{PLAYER2_NAME} : {score2}", True, SCORE_GOLD)
+
+    screen.blit(score1_text, (10, 10))
+    screen.blit(score2_text, (WIDTH-score2_text.get_width() - 10, 10))
+
+
