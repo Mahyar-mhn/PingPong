@@ -6,6 +6,10 @@ WIDTH, HEIGHT = 800, 600
 BALL_SPEED = 9
 PADDLE_SPEED = 7
 
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Ping Pong")
+
+
 TABLE_GREEN: (0, 102, 0)
 BALL_ORANGE: (255, 140, 0)
 PADDLE_BLUE: (0, 0, 255)
@@ -40,10 +44,25 @@ def draw_scores():
     score2_text = font.render(f"{PLAYER2_NAME} : {score2}", True, SCORE_GOLD)
 
     screen.blit(score1_text, (10, 10))
-    screen.blit(score2_text, (WIDTH-score2_text.get_width() - 10, 10))
+    screen.blit(score2_text, (WIDTH - score2_text.get_width() - 10, 10))
 
 
 def check_collision(ball, paddle):
     if ball.colliderect(paddle):
         return True
     return False
+
+
+def reset_all_positions():
+    side = random.choice(("left", "right"))
+    if side == "left":
+        BALL.x = 70
+        ball_dx = BALL_SPEED
+    else:
+        BALL.x = WIDTH - 100
+        ball_dx = -BALL_SPEED
+
+    ball_dy = HEIGHT // 2 - 15
+    return ball_dx
+
+
