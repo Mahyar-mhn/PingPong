@@ -1,0 +1,33 @@
+import pygame
+import random
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+BALL_SPEED = 9
+PADDLE_SPEED = 7
+
+TABLE_GREEN: (0, 102, 0)
+BALL_ORANGE: (255, 140, 0)
+PADDLE_BLUE: (0, 0, 255)
+BACKGROUND_GRAY: (192, 192, 192)
+SCOREBOARD_YELLOW: (255, 255, 0)
+NET_WHITE: (255, 255, 255)
+
+score1 = 0
+score2 = 0
+
+PLAYER1_NAME = 'A'
+PLAYER2_NAME = 'B'
+
+# make the ball to be the center of the screen for start
+BALL = pygame.Rect(WIDTH // 2 - 15, HEIGHT // 2 - 15, 30, 30)
+PADDLE1 = pygame.Rect(50, HEIGHT // 2 - 60, 10, 120)
+PADDLE2 = pygame.Rect(WIDTH - 60, HEIGHT // 2 - 60, 10, 120)
+
+ball_dx = BALL_SPEED * random.choice((1, -1))
+ball_dy = BALL_SPEED * random.choice((1, -1))
+
+paddle1_dy = 0
+paddle2_dy = 0
+
+ball_in_motion = True
